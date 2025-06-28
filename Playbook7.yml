@@ -1,0 +1,34 @@
+#A playbook to test cisco ios_config module 
+
+---
+- name: Cisco ios_config module
+  hosts: routers_pass_auth
+  tasks:
+
+    - name: Config mode command
+      ios_config:
+        lines:
+          - ip domain name cisco
+
+    - name: Configure Interfaces with IP
+      ios_config:
+        parents: interface GigabitEthernet0/1
+        lines:
+          - ip address 10.10.10.1 255.255.255.0
+          - description ansible_configured
+        diff_against: startup
+        save_when: modified
+
+    - name: Configure Multiple Interfaces
+      ios_config:
+        parents: "{{ item }}"
+        lines:
+          - description Nothing Attached
+        after: 
+          - no shutdown
+        diff_against: startup
+        save_when: modified
+      loop:
+        - interface GigabitEthernet0/2
+        - interface GigabitEthernet0/3
+

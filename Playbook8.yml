@@ -1,0 +1,24 @@
+#A playbook to get config from txt file
+
+---
+- name: Get Configuration from Text file
+  hosts: routers_pass_auth
+  tasks: 
+   
+   - name: Configure Interface from File
+     ios_config: 
+      src: int_config.txt
+      diff_against: startup
+      save_when: modified
+
+
+   - name: Get Facts
+     ios_facts: 
+      gather_subset: all
+
+   - name: Print Interface Details
+     debug: 
+      msg: "{{ ansible_net_interfaces }}"
+
+
+      

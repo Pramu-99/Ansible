@@ -1,0 +1,38 @@
+#A playbook to try cisco enable password,var,msg with ansible debug module
+
+---
+- name: Cisco Enable Password, Debug-var/msg
+  hosts: routers
+  tasks: 
+   - name: Print Ansible Username
+     debug: 
+       #var: ansible_facts
+       msg: 
+        - "The Username is:{{ansible_user}}"
+
+   - name: Execute Show Command to test Enable Password
+     ios_command: 
+      commands: 
+         - show run
+
+   - name: Get Facts with Variable name
+     ios_facts: 
+      gather_subset: all
+     register: this_facts
+
+   - name: Print Variable Output
+     debug: 
+       var: this_facts
+
+    #print filtered output
+
+   - name: Print Filtered Output from this_facts
+     debug: 
+       msg: "{{this_facts['ansible_facts']['ansible_net_hostname']}}"
+       msg: "{{this_facts['ansible_facts']['ansible_net_all_ipv4_addresses']}}"
+         
+     
+    
+
+      
+   

@@ -1,0 +1,32 @@
+#A playbook to test cisco ios_command module
+
+---
+- name: Cisco ios_command Module
+  hosts: routers
+  tasks: 
+   
+   - name: Execute Show Commands
+     ios_command: 
+      commands: 
+       - show run
+       - show ip int brief
+     register: show_out
+
+   - name: Print Output
+     debug: 
+      msg: "{{show_out.stdout_lines}}"
+
+   - name: Check Conditions
+     ios_command: 
+      commands: 
+       - show run
+       - show ip int brief
+      match: any #match: all/any
+      wait_for: 
+       - result[0] contains description to the switch1
+       - result[1] contains GigabitEthernet0/0
+     
+      
+
+
+ 

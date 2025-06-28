@@ -1,0 +1,78 @@
+#A playbook to get test states
+
+---
+- name: Cisco ios_interfaces module
+  hosts: routers_pass_auth
+  gather_facts: no
+  tasks: 
+   
+    # - name: Interface Configuration
+    #   ios_interfaces: 
+    #     config: 
+    #       - name: GigabitEthernet0/1
+    #         description: Ansible Configured 
+    #         enabled: yes
+    #         duplex: full
+    #         speed: 1000
+    #     state: merged
+    #   register: int_des
+
+    # - name: Validating before config
+    #   debug: 
+    #     var: int_des.before
+
+    # - name: Validating commands used
+    #   debug: 
+    #     var: int_des.commands
+
+    # - name: Validating after config
+    #   debug: 
+    #     var: int_des.after
+
+
+    #testing status:deleted
+
+    # - name: Using State Deleted
+    #   ios_interfaces: 
+    #     config: 
+    #       - name: GigabitEthernet0/1
+    #     state: deleted
+    
+    #testing status:overridden
+
+    # - name: Using State Overridden
+    #   ios_interfaces: 
+    #     config: 
+    #       - name: GigabitEthernet0/1
+    #         enabled: yes
+    #     state: overridden
+
+    #testing status:replaced
+
+    - name: Interface Configuration
+      ios_interfaces: 
+        config: 
+          - name: GigabitEthernet0/1
+            description: Ansible Configured 
+            enabled: yes
+            duplex: full
+            speed: 1000
+        state: replaced
+      register: int_des
+
+    - name: Validating before config
+      debug: 
+        var: int_des.before
+
+    - name: Validating commands used
+      debug: 
+        var: int_des.commands
+
+    - name: Validating after config
+      debug: 
+        var: int_des.after
+      
+
+     
+     
+

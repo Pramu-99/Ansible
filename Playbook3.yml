@@ -1,0 +1,36 @@
+# A playbook to gather various facts from a cisco device
+
+---
+- name: Test IOS Facts
+  hosts: routers
+  #gather_facts: false
+  tasks: 
+   - debug: 
+      var: ansible_facts
+
+   - name: Gather IOS Facts
+     ios_facts: 
+       gather_subset: all
+     register: all_subset
+
+   - name: Print Subset All 
+     debug: 
+       var: all_subset
+
+   - name: Gather Hardware 
+     ios_facts: 
+       gather_subset: hardware
+     register: hw
+
+   - name: Print Hardware
+     debug:
+       var: hw
+
+   - name: Gather Interfaces
+     ios_facts:
+       gather_subset: interfaces
+     register: int
+   
+   - name: Print Interfaces
+     debug: 
+       var: int

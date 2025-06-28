@@ -1,0 +1,73 @@
+#A playbook to manage L3 interfaces
+
+---
+- name: Cisco ios_l3_interfaces module
+  hosts: routers_pass_auth
+  tasks: 
+
+#merged
+
+   - name: interface Configuration
+     ios_l3_interfaces: 
+      config: 
+       - name: GigabitEthernet0/1
+         ipv4: 
+          - address: 2.2.2.5 255.255.255.0
+      state: merged
+     register: int_ipv4
+
+   - name: Validating before config
+     debug: 
+      var: int_ipv4.before
+
+   - name: Validating commands used
+     debug: 
+      var: int_ipv4.commands
+
+   - name: Validating after config
+     debug: 
+      var: int_ipv4.after 
+
+#replaced
+
+  #  - name: interface Configuration
+  #    ios_l3_interfaces: 
+  #     config: 
+  #      - name: GigabitEthernet0/1
+  #        ipv4: 
+  #         - address: 2.2.2.10 255.255.255.0
+  #     state: replaced
+  #    register: int_ipv4
+
+  #  - name: Validating before config
+  #    debug: 
+  #     var: int_ipv4.before
+
+  #  - name: Validating commands used
+  #    debug: 
+  #     var: int_ipv4.commands
+
+  #  - name: Validating after config
+  #    debug: 
+  #     var: int_ipv4.after
+
+#deleted
+
+  #  - name: interface Configuration
+  #    ios_l3_interfaces: 
+  #     config: 
+  #      - name: GigabitEthernet0/3        
+  #     state: deleted
+
+#overridden
+
+  #  - name: interface Configuration
+  #    ios_l3_interfaces: 
+  #     config: 
+  #      - name: GigabitEthernet0/3  
+  #        ipv4: 
+  #         - address: 2.2.2.8 255.255.255.0      
+  #     state: overridden
+
+
+

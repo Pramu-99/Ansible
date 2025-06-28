@@ -1,0 +1,65 @@
+#A playbook to manage L2 interfaces
+
+---
+- name: Cisco ios_l2_interfaces module
+  hosts: switches
+  gather_facts: no
+  tasks: 
+
+   - name: Configure Access 
+     ios_l2_interfaces:
+       config: 
+         - name: GigabitEthernet0/1
+           access: 
+             vlan: 10
+       state: merged
+
+  #merged
+
+   - name: Configure Trunk
+     ios_l2_interfaces:
+       config: 
+         - name: GigabitEthernet0/1
+           trunk: 
+             allowed_vlans: 11-15
+             encapsulation: dot1q
+             native_vlan: 5
+       state: merged
+
+  # #replaced
+
+  #  - name: Configure Trunk
+  #    ios_l2_interfaces:
+  #      config: 
+  #        - name: GigabitEthernet0/1
+  #          trunk: 
+  #            allowed_vlans: 11-15
+  #            encapsulation: dot1q
+  #            native_vlan: 5
+  #      state: replaced
+  #    register: int_data
+
+
+  #  - name: Validating before config
+  #    debug: 
+  #      var: int_data.before
+
+  #  - name: Validating commands used
+  #    debug: 
+  #      var: int_data.commands
+
+  #  - name: Validating after config
+  #    debug: 
+  #      var: int_data.after
+
+  #overridden
+  
+  #  - name: Configure Trunk
+  #    ios_l2_interfaces:
+  #      config: 
+  #        - name: GigabitEthernet0/1
+  #          trunk: 
+  #            allowed_vlans: 11-15
+  #            encapsulation: dot1q
+  #            native_vlan: 5
+  #      state: overridden

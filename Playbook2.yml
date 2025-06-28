@@ -1,0 +1,33 @@
+#ansible-playbook -i 192.168.0.3, -u pramu -k -e ansible_network_os=ios Playbook2.yml
+
+- name: Network Getting Started Second Playbook Extended
+  connection: network_cli
+  gather_facts: false
+  hosts: all
+  vars:
+    ansible_become: yes
+    ansible_become_method: enable
+    ansible_become_password: pramu99
+
+  tasks:
+    - name: Get config for IOS devices
+      ios_facts:
+        gather_subset: all
+
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ ansible_net_hostname }} and the OS is {{ ansible_net_version }}"
+
+    - name: Update the hostname
+      ios_config:
+        backup: yes
+        lines:
+          - hostname Ansible
+
+    - name: Get changed config for IOS devices
+      ios_facts:
+        gather_subset: all
+
+    - name: Display the changed config
+      debug:
+        msg: "The new hostname is {{ ansible_net_hostname }} and the OS is {{ ansible_net_version }}"
