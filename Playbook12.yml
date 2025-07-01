@@ -1,0 +1,70 @@
+#A playbook to test ios_static route module
+
+---
+- name: Cisco ios_static_route module
+  hosts: routers_pass_auth
+  gather_facts: false
+  tasks: 
+   
+   #using next hop
+   - name: Configure Static Route 1
+     ios_static_route: 
+      prefix: 10.10.10.0
+      mask: 255.255.255.0
+      next_hop: 12.12.12.1
+      state: present
+     register: route1
+    
+   - name: Validating Route Configuration
+     debug: 
+      var: route1.commands 
+
+   #using exit interface
+   - name: Configure Static Route 2
+     ios_static_route: 
+      prefix: 11.11.11.0
+      mask: 255.255.255.0
+      interface: GigabitEthernet0/2
+      state: present
+     register: route2
+
+   - name: Validating Route Configuration
+     debug: 
+      var: route2.commands 
+
+   #using aggregate model
+   - name: Configure Static Route 3
+     ios_static_route: 
+      aggregate: 
+            - { prefix: 13.13.13.0, mask: 255.255.255.0, interface: GigabitEthernet0/2}
+            - { prefix: 14.14.14.0, mask: 255.255.255.0, interface: GigabitEthernet0/3}
+      state: present
+     register: route3
+
+   - name: Validating Route Configuration
+     debug: 
+      var: route3.commands
+
+   #removing static route
+   - name: Configure Static Route 4
+     ios_static_route: 
+      prefix: 11.11.11.0
+      mask: 255.255.255.0
+      interface: GigabitEthernet0/2
+      state: absent
+     register: route4
+
+   - name: Validating Route Configuration
+     debug: 
+      var: route4.commands
+
+   #saving config
+   - name: Saving Configuration
+     ios_config: 
+      save_when: modified 
+
+
+
+
+     
+
