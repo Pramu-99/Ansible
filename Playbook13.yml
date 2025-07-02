@@ -1,0 +1,53 @@
+#A playbook to test ios_user module
+
+---
+- name: Cisco ios_users module
+  hosts: routers_pass_auth
+  gather_facts: false
+  tasks: 
+
+  #creating admin1
+   - name: Adding a User
+     ios_user: 
+      name: admin1
+      hashed_password: 
+       type: 5
+       value: $1$pass$Fd9/Oy4TvalSs9Ipbhkma.
+      privilege: 15
+      state: present
+     register: add_user
+    
+  #validating admin1
+   - name: Validating Admin1
+     debug: 
+      var: add_user
+
+
+  #removing admin1
+  #  - name: Removing a admin1
+  #    ios_user: 
+  #     name: user1
+  #     state: absent
+  #    register: remove_user
+    
+  # #validating admin1
+  #  - name: Validating Admin1
+  #    debug: 
+  #     var: remove_user
+
+
+  #removing a user using purge method
+  #  - name: Removing user1 using purge method 
+  #    ios_user: 
+  #     aggregate: 
+  #      - name: admin1
+  #     purge: yes
+  #    register: purge
+
+
+  # #validation removal of user1
+  #  - name: Validating user1 removal
+  #    debug: 
+  #     var: purge
+
+
