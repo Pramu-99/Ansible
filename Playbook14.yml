@@ -1,0 +1,192 @@
+#A playbook to test ios_vlans module
+
+---
+- name: Cisco ios_vlans module
+  hosts: switches
+  gather_facts: false
+  tasks: 
+   
+   #using merged option
+   - name: Create VLAN 
+     ios_vlans: 
+      config: 
+       - name: VLAN10
+         vlan_id: 10
+         shutdown: enabled
+         state: suspend
+      state: merged
+     register: vlan
+
+   #validating before config
+
+   - name: Validating VLAN Creation
+     debug: 
+      var: vlan.before
+
+   #validating current config
+
+   - name: Validating VLAN Creation
+     debug: 
+      var: vlan.commands
+
+   #validating after config
+
+   - name: Validating VLAN Creation
+     debug: 
+      var: vlan.after
+
+
+
+      #using replaced option
+  #  - name: Create VLAN 
+  #    ios_vlans: 
+  #     config: 
+  #      - name: VLAN10
+  #        vlan_id: 10
+  #        shutdown: enabled
+  #        state: suspend
+  #     state: replaced
+  #    register: vlan
+
+  #  #validating before config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.before
+
+  #  #validating current config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.commands
+
+  #  #validating after config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.after
+
+
+
+
+      #creating multiple vlans
+  #  - name: Creating multiple vlans 
+  #    ios_vlans: 
+  #     config: 
+  #      - name: VLAN10
+  #        vlan_id: 10
+
+  #      - name: VLAN10
+  #        vlan_id: 20
+
+  #      - name: VLAN30
+  #        vlan_id: 30
+
+  #      - name: VLAN40
+  #        vlan_id: 40
+         
+
+  #     state: merged
+  #    register: vlan
+
+  #  #validating before config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.before
+
+  #  #validating current config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.commands
+
+  #  #validating after config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.after
+
+
+
+
+
+  #     #deleting vlans
+  #  - name: Deleting vlans
+  #    ios_vlans: 
+  #     config:       
+
+  #      - name: VLAN40
+  #        vlan_id: 40
+         
+
+  #     state: deleted
+  #    register: vlan
+
+  #  #validating before config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.before
+
+  #  #validating current config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.commands
+
+  #  #validating after config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.after
+
+
+
+
+
+  #     #using overridden option
+  #  - name: Creating multiple vlans 
+  #    ios_vlans: 
+  #     config: 
+  #      - name: VLAN10
+  #        vlan_id: 10
+
+  #      - name: VLAN10
+  #        vlan_id: 20
+
+  #      - name: VLAN30
+  #        vlan_id: 30
+
+  #      - name: VLAN40
+  #        vlan_id: 40
+         
+
+  #     state: merged
+  #    register: vlan
+
+  #  #validating before config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.before
+
+  #  #validating current config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.commands
+
+  #  #validating after config
+
+  #  - name: Validating VLAN Creation
+  #    debug: 
+  #     var: vlan.after
+
+
+  #saving config
+   - name: Saving Configuration
+     ios_config: 
+      save_when: modified
+
+  
